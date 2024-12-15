@@ -1,5 +1,10 @@
 name: Context testing
-on: pull_request
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   dump_contexts_to_log:
@@ -9,9 +14,11 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           REF_CONTEXT: ${{ github.ref }}
+          BASE_REF_CONTEXT: ${{ github.base_ref }}
         run: |
           echo "$REF_CONTEXT"
           echo "$GITHUB_CONTEXT"
+          echo "$BASE_REF_CONTEXT"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
